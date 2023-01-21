@@ -1,0 +1,22 @@
+﻿@model HomeViewModel
+
+@for (int i = 0; i < Model.Product.Count; i++)
+{
+
+    <div class="col-xl-3 col-lg-4 col-sm-6">
+        <div class="product text-center">
+            <div class="position-relative mb-3">
+                <div class="badge text-white bg-"></div><a class="d-block" asp-controller="home" asp-action="detail" asp-route-id="@Model.Product[i].Id"><img class="~/assets/img-fluid w-100" src="~/assets/img/@Model.Product[i].ImageUrl" alt="..."></a>
+                <div class="product-overlay">
+                    <ul class="mb-0 list-inline">
+                        <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
+                        <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" asp-controller="home" asp-action="AddTOBasket" asp-route-productId="@Model.Product[i].Id">Add to cart</a></li>
+                        <li class="list-inline-item me-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <h6> <a class="reset-anchor" asp-controller="home" asp-action="detail" asp-route-id="@Model.Product[i].Id">@Model.Product[i].Name</a></h6>
+            <p class="small text-muted">$@Model.Product[i].SalePrice</p>
+        </div>
+    </div>
+}

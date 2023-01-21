@@ -3,6 +3,5 @@
     public class Tag:Base
     {
         public List<Product> Products { get; set; }
-
     }
 }

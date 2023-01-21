@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@inject Boutique_ZR.Services.MemberLayoutService service
+@{
+    AppUser user = await service.GetUser();
+}
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -31,28 +37,40 @@
         <header class="header bg-white">
             <div class="container px-lg-3">
                 <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
-                    <a class="navbar-brand" href="index.html"><span class="fw-bold text-uppercase text-dark">Boutique</span></a>
+                    <a class="navbar-brand" asp-action="index" asp-controller="home"><span class="fw-bold text-uppercase text-dark">Boutique</span></a>
                     <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <!-- Link--><a class="nav-link active" href="index.html">Home</a>
+                                <!-- Link--><a class="nav-link active" asp-controller="home" asp-action="index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <!-- Link--><a class="nav-link" href="shop.html">Shop</a>
+                                <!-- Link--><a class="nav-link" asp-controller="shop" asp-action="index">Shop</a>
                             </li>
                             <li class="nav-item">
-                                <!-- Link--><a class="nav-link" href="detail.html">Product detail</a>
+                                <!-- Link--><a class="nav-link" asp-controller="home" asp-action="detail" asp-route-id="2">Product detail</a>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown"><a class="dropdown-item border-0 transition-link" href="index.html">Homepage</a><a class="dropdown-item border-0 transition-link" href="shop.html">Category</a><a class="dropdown-item border-0 transition-link" href="detail.html">Product detail</a><a class="dropdown-item border-0 transition-link" href="cart.html">Shopping cart</a><a class="dropdown-item border-0 transition-link" href="checkout.html">Checkout</a></div>
+                                <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown"><a class="dropdown-item border-0 transition-link" asp-controller="home" asp-action="index">Homepage</a><a class="dropdown-item border-0 transition-link" asp-controller="shop" asp-action="index">Category</a><a class="dropdown-item border-0 transition-link" asp-controller="home" asp-action="detail" asp-route-id="2">Product detail</a><a class="dropdown-item border-0 transition-link" asp-controller="cart" asp-action="index">Shopping cart</a><a class="dropdown-item border-0 transition-link" asp-controller="checkout" asp-action="index">Checkout</a></div>
                             </li>
                         </ul>
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link" href="cart.html"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="cart" asp-action="index"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart</a></li>
                             <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></a></li>
-                            <li class="nav-item"><a class="nav-link" href="#!"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" style="margin:8px">@user.Fullname</span>
+                                <a asp-controller="account" asp-action="logout" style="margin:8px">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            }
+                            else
+                            {
+                                <li class="nav-item"><a class="nav-link" asp-action="login" asp-controller="account"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-action="register" asp-controller="account"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Register</a></li>
+                            }
                         </ul>
                     </div>
                 </nav>

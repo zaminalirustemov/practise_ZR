@@ -1,15 +1,31 @@
 using Boutique_ZR.Models;
+using Boutique_ZR.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession();
 builder.Services.AddDbContext<BoutiqueDbContext>(opt =>
 {
-    opt.UseSqlServer("Server=DESKTOP-OT3RPGF;Database=Boutique_DataBase_ZR;Trusted_Connection=True");
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
+builder.Services.AddIdentity<AppUser, IdentityRole>(opt =>
+{
+    opt.Password.RequiredUniqueChars = 0;
+    opt.Password.RequiredLength = 8;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireUppercase = true;
+    opt.Password.RequireLowercase = true;
+    opt.Password.RequireDigit = true;
+
+    opt.User.RequireUniqueEmail = false;
+}).AddEntityFrameworkStores<BoutiqueDbContext>().AddDefaultTokenProviders();
+
+builder.Services.AddScoped<MemberLayoutService>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,7 +40,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
